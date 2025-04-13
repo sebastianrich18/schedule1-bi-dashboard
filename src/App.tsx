@@ -11,8 +11,24 @@ import Customers from "./pages/Customers";
 import Products from "./pages/Products";
 import Dealers from "./pages/Dealers";
 import Events from "./pages/Events";
+import { usePageTracking } from "./hooks/useAnalytics";
 
 const queryClient = new QueryClient();
+
+const AppRoutes = () => {
+  usePageTracking();
+  
+  return (
+    <Routes>
+      <Route path="/" element={<Overview />} />
+      <Route path="/customers" element={<Customers />} />
+      <Route path="/products" element={<Products />} />
+      <Route path="/dealers" element={<Dealers />} />
+      <Route path="/events" element={<Events />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -21,14 +37,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Overview />} />
-            <Route path="/customers" element={<Customers />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/dealers" element={<Dealers />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AppRoutes />
         </BrowserRouter>
       </DashboardProvider>
     </TooltipProvider>
