@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { parseCSVFile } from '@/utils/csvParser';
 import { processDashboardData } from '@/utils/dataProcessor';
 import { useToast } from '@/components/ui/use-toast';
-import { Upload, FileText, AlertCircle, X, Info } from 'lucide-react';
+import { Upload, FileText, AlertCircle, X, Info, Download } from 'lucide-react';
 
 interface CSVUploadProps {
   onDataProcessed: (data: any) => void;
@@ -92,6 +92,10 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onDataProcessed, onCancel }) => {
     }
   }, []);
 
+  const downloadMod = () => {
+    window.open('https://github.com/sebastianrich18/BusinessIntelligenceMod/releases/', '_blank');
+  };
+
   return (
     <Card className="w-full md:max-w-2xl mx-auto animate-fade-in">
       <CardHeader>
@@ -146,7 +150,7 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onDataProcessed, onCancel }) => {
                 or click to select a file from your computer
               </p>
               
-              <div className="mt-2">
+              <div className="flex gap-2 mt-2">
                 <Button variant="outline" asChild className="cursor-pointer">
                   <label>
                     <input 
@@ -158,20 +162,27 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onDataProcessed, onCancel }) => {
                     <FileText className="mr-2 h-4 w-4" /> Select CSV File
                   </label>
                 </Button>
+                
+                <Button 
+                  variant="outline" 
+                  onClick={downloadMod}
+                >
+                  <Download className="mr-2 h-4 w-4" /> Get the Mod
+                </Button>
               </div>
               
-              <div className="mt-6 space-y-2">
+              <div className="mt-6 space-y-2 w-full">
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <AlertCircle className="h-3 w-3" />
+                  <AlertCircle className="h-3 w-3 flex-shrink-0" />
                   <span>The CSV must have GameTime, RealTime, EventType, and Payload columns</span>
                 </div>
                 
                 <div className="bg-muted/50 p-3 rounded-md flex gap-2 text-xs">
                   <Info className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
+                  <div className="overflow-hidden">
                     <p className="font-medium">Looking for your game data file?</p>
                     <p className="mt-1">It's typically located at:</p>
-                    <pre className="bg-background/50 p-2 rounded mt-1 text-xs overflow-auto">
+                    <pre className="bg-background/50 p-2 rounded mt-1 text-xs overflow-x-auto whitespace-pre-wrap break-all">
                       C:\Users\{"{USER}"}\AppData\LocalLow\TVGS\Schedule I\BusinessIntelligence\business_intelligence_data.csv
                     </pre>
                   </div>

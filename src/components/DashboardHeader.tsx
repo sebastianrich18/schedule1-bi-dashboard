@@ -34,20 +34,24 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     URL.revokeObjectURL(url);
   };
   
+  const downloadMod = () => {
+    window.open('https://github.com/sebastianrich18/BusinessIntelligenceMod/releases/', '_blank');
+  };
+  
   return (
     <div className="flex justify-between items-center mb-6">
       <h1 className="text-2xl font-bold">Sales Analytics Dashboard</h1>
       
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <Button 
           variant="outline" 
           size="sm" 
           onClick={onReset}
           className="text-xs"
-          title={isCustomData ? "Reset to sample data" : "Refresh sample data"}
+          title="Reset to upload screen"
         >
           <RefreshCcw className="h-3.5 w-3.5 mr-1.5" />
-          {isCustomData ? "Reset" : "Refresh"}
+          Reset
         </Button>
         
         <Button 
@@ -57,7 +61,17 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           className="text-xs"
         >
           <Upload className="h-3.5 w-3.5 mr-1.5" />
-          {isCustomData ? "New CSV" : "Upload CSV"}
+          New CSV
+        </Button>
+        
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={downloadMod}
+          className="text-xs"
+        >
+          <Download className="h-3.5 w-3.5 mr-1.5" />
+          Get Mod
         </Button>
         
         <Button 

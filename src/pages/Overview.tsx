@@ -54,14 +54,9 @@ const Overview = () => {
             />
           </div>
         ) : (
-          <div className="text-center">
-            <p>No data available. Please upload a CSV file.</p>
-            <button 
-              className="mt-4 px-4 py-2 bg-primary text-white rounded-md"
-              onClick={handleUploadClick}
-            >
-              Upload CSV
-            </button>
+          <div className="text-center p-6">
+            <p className="mb-4">No data available. Please upload a CSV file.</p>
+            <CSVUpload onDataProcessed={handleDataProcessed} />
           </div>
         )}
       </div>
