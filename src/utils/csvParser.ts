@@ -21,13 +21,23 @@ export const parseCSV = (csvText: string): CSVData[] => {
     }
     
     if (matches.length >= headers.length) {
-      const obj: Record<string, string> = {};
+      // Create a record with the expected CSVData properties
+      const csvDataObj: CSVData = {
+        GameTime: '',
+        RealTime: '',
+        EventType: '',
+        Payload: ''
+      };
       
+      // Assign values to the object based on the headers
       headers.forEach((header, index) => {
-        obj[header] = matches[index];
+        // Only assign known properties from the CSVData type
+        if (header in csvDataObj) {
+          (csvDataObj as any)[header] = matches[index];
+        }
       });
       
-      result.push(obj as CSVData);
+      result.push(csvDataObj);
     }
   }
   
