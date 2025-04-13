@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   BarChart3, 
   Users, 
@@ -17,6 +18,8 @@ interface DashboardSidebarProps {
 }
 
 const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onUploadClick }) => {
+  const location = useLocation();
+  
   return (
     <div className="w-64 border-r bg-sidebar h-screen flex flex-col">
       {/* Header */}
@@ -33,25 +36,55 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onUploadClick }) =>
           INSIGHTS
         </div>
         <div className="space-y-1 px-2">
-          <Button variant="ghost" className="w-full justify-start">
-            <BarChart3 className="mr-2 h-4 w-4" />
-            Sales Overview
+          <Button 
+            variant={location.pathname === "/" ? "secondary" : "ghost"} 
+            className="w-full justify-start"
+            asChild
+          >
+            <Link to="/">
+              <BarChart3 className="mr-2 h-4 w-4" />
+              Sales Overview
+            </Link>
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <Users className="mr-2 h-4 w-4" />
-            Customers
+          <Button 
+            variant={location.pathname === "/customers" ? "secondary" : "ghost"} 
+            className="w-full justify-start"
+            asChild
+          >
+            <Link to="/customers">
+              <Users className="mr-2 h-4 w-4" />
+              Customers
+            </Link>
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <ShoppingBag className="mr-2 h-4 w-4" />
-            Products
+          <Button 
+            variant={location.pathname === "/products" ? "secondary" : "ghost"} 
+            className="w-full justify-start"
+            asChild
+          >
+            <Link to="/products">
+              <ShoppingBag className="mr-2 h-4 w-4" />
+              Products
+            </Link>
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <UserCheck className="mr-2 h-4 w-4" />
-            Dealers
+          <Button 
+            variant={location.pathname === "/dealers" ? "secondary" : "ghost"} 
+            className="w-full justify-start"
+            asChild
+          >
+            <Link to="/dealers">
+              <UserCheck className="mr-2 h-4 w-4" />
+              Dealers
+            </Link>
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <PieChart className="mr-2 h-4 w-4" />
-            Events
+          <Button 
+            variant={location.pathname === "/events" ? "secondary" : "ghost"} 
+            className="w-full justify-start"
+            asChild
+          >
+            <Link to="/events">
+              <PieChart className="mr-2 h-4 w-4" />
+              Events
+            </Link>
           </Button>
         </div>
         
@@ -67,13 +100,25 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onUploadClick }) =>
             <Upload className="mr-2 h-4 w-4" />
             Upload CSV
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
+          <Button 
+            variant={location.pathname === "/settings" ? "secondary" : "ghost"} 
+            className="w-full justify-start"
+            asChild
+          >
+            <Link to="/settings">
+              <Settings className="mr-2 h-4 w-4" />
+              Settings
+            </Link>
           </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <Info className="mr-2 h-4 w-4" />
-            About
+          <Button 
+            variant={location.pathname === "/about" ? "secondary" : "ghost"} 
+            className="w-full justify-start"
+            asChild
+          >
+            <Link to="/about">
+              <Info className="mr-2 h-4 w-4" />
+              About
+            </Link>
           </Button>
         </div>
       </div>
