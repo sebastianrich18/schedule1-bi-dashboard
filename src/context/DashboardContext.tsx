@@ -36,7 +36,7 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
       try {
         console.log("Loading sample data...");
         const sampleData = await getSampleDashboardData();
-        console.log("Sample data loaded:", sampleData);
+        console.log("Sample data loaded successfully:", sampleData);
         setDashboardData(sampleData);
         setIsLoading(false);
         setIsCustomData(false);
@@ -51,22 +51,23 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
         setShowUpload(true);
         
         toast({
+          variant: "destructive",
           title: "Error Loading Sample Data",
-          description: "Failed to load sample data. Please upload your own CSV.",
-          variant: "destructive"
+          description: "Failed to load sample data. Please upload your own CSV."
         });
       }
     };
 
-    if (isLoading) {
+    if (isLoading && !dashboardData) {
       loadSampleData();
     }
-  }, [isLoading, toast]);
+  }, [isLoading, toast, dashboardData]);
 
   const handleDataProcessed = (data: DashboardData) => {
     setDashboardData(data);
     setShowUpload(false);
     setIsCustomData(true);
+    setIsLoading(false);
     
     toast({
       title: "Custom Data Loaded",
@@ -81,12 +82,13 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
   const handleReset = () => {
     // Reset to sample data
     setIsLoading(true);
+    setShowUpload(false);
+    
     getSampleDashboardData()
       .then(sampleData => {
         setDashboardData(sampleData);
-        setShowUpload(false);
-        setIsLoading(false);
         setIsCustomData(false);
+        setIsLoading(false);
         
         toast({
           title: "Reset to Sample Data",
@@ -98,9 +100,9 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
         setIsLoading(false);
         
         toast({
+          variant: "destructive",
           title: "Error Resetting Data",
-          description: "Failed to reset to sample data.",
-          variant: "destructive"
+          description: "Failed to reset to sample data."
         });
       });
   };

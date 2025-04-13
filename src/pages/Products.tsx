@@ -2,6 +2,8 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { InfoIcon } from 'lucide-react';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import DashboardHeader from '@/components/DashboardHeader';
 import CSVUpload from '@/components/CSVUpload';
@@ -43,7 +45,7 @@ const Products = () => {
               onDataProcessed={handleDataProcessed} 
               onCancel={() => {
                 if (dashboardData) {
-                  showUpload && handleUploadClick();
+                  handleUploadClick();
                 }
               }}
             />
@@ -57,6 +59,16 @@ const Products = () => {
                 data={dashboardData}
                 isCustomData={isCustomData}
               />
+              
+              {!isCustomData && (
+                <Alert variant="default" className="bg-primary/10 border border-primary/20">
+                  <InfoIcon className="h-4 w-4" />
+                  <AlertTitle>Sample Data Mode</AlertTitle>
+                  <AlertDescription>
+                    You are currently viewing sample data. Upload your own CSV file to see your custom data.
+                  </AlertDescription>
+                </Alert>
+              )}
               
               <div className="grid grid-cols-1 gap-6">
                 <TopProductsChart data={dashboardData} />

@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { DashboardData } from '@/utils/types';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { InfoIcon } from 'lucide-react';
 import SummaryCard from './SummaryCard';
 import SalesOverTimeChart from './SalesOverTimeChart';
 import TopCustomersChart from './TopCustomersChart';
@@ -34,11 +36,13 @@ const Dashboard: React.FC<DashboardProps> = ({
       />
       
       {!isCustomData && (
-        <div className="bg-primary/10 p-3 rounded-md mb-4 border border-primary/20">
-          <p className="text-sm text-muted-foreground">
-            Currently viewing sample data. Upload your own CSV file to see your custom data.
-          </p>
-        </div>
+        <Alert variant="default" className="bg-primary/10 border border-primary/20">
+          <InfoIcon className="h-4 w-4" />
+          <AlertTitle>Sample Data Mode</AlertTitle>
+          <AlertDescription>
+            You are currently viewing sample data. Upload your own CSV file to see your custom data.
+          </AlertDescription>
+        </Alert>
       )}
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
