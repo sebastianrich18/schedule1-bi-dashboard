@@ -1,5 +1,5 @@
+
 import { DashboardData, ParsedEvent } from '@/utils/types';
-import { processRawCSVData } from '@/utils/csvParser';
 import { processDashboardData } from '@/utils/dataProcessor';
 
 const sampleCSVData = `GameTime,RealTime,EventType,Payload
@@ -32,10 +32,11 @@ const sampleCSVData = `GameTime,RealTime,EventType,Payload
 
 export const parseSampleData = async (): Promise<ParsedEvent[]> => {
   try {
-    // Use the existing parser functions to parse the CSV
-    const { parseCSV, processRawCSVData } = await import('@/utils/csvParser');
-    const parsedData = parseCSV(sampleCSVData);
-    return processRawCSVData(parsedData);
+    // Import the parseCSV function from the csvParser utility
+    const { parseCSV } = await import('@/utils/csvParser');
+    // Parse the sample CSV data
+    const parsedData = await parseCSV(sampleCSVData);
+    return parsedData;
   } catch (error) {
     console.error('Error parsing sample data:', error);
     return [];
