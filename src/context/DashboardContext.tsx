@@ -34,7 +34,9 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
     // Load sample data on initial render
     const loadSampleData = async () => {
       try {
+        console.log("Loading sample data...");
         const sampleData = await getSampleDashboardData();
+        console.log("Sample data loaded:", sampleData);
         setDashboardData(sampleData);
         setIsLoading(false);
         setIsCustomData(false);
@@ -56,10 +58,10 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
       }
     };
 
-    if (isLoading && !dashboardData) {
+    if (isLoading) {
       loadSampleData();
     }
-  }, []);
+  }, [isLoading, toast]);
 
   const handleDataProcessed = (data: DashboardData) => {
     setDashboardData(data);
@@ -73,7 +75,7 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
   };
 
   const handleUploadClick = () => {
-    setShowUpload(true);
+    setShowUpload(!showUpload);
   };
 
   const handleReset = () => {

@@ -1,83 +1,23 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import DashboardSidebar from '@/components/DashboardSidebar';
-import { DashboardData } from '@/utils/types';
-import { getSampleDashboardData } from '@/data/sampleData';
-import { useToast } from '@/components/ui/use-toast';
 import TopCustomersChart from '@/components/TopCustomersChart';
 import DashboardHeader from '@/components/DashboardHeader';
 import CSVUpload from '@/components/CSVUpload';
+import { useDashboard } from '@/context/DashboardContext';
 
 const Customers = () => {
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
-  const [showUpload, setShowUpload] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const { toast } = useToast();
-
-  useEffect(() => {
-    // Load sample data on initial render
-    const loadSampleData = async () => {
-      try {
-        const sampleData = await getSampleDashboardData();
-        setDashboardData(sampleData);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Failed to load sample data:", error);
-        setIsLoading(false);
-        setShowUpload(true);
-        
-        toast({
-          title: "Error Loading Sample Data",
-          description: "Failed to load sample data. Please upload your own CSV.",
-          variant: "destructive"
-        });
-      }
-    };
-
-    loadSampleData();
-  }, []);
-
-  const handleDataProcessed = (data: DashboardData) => {
-    setDashboardData(data);
-    setShowUpload(false);
-    
-    toast({
-      title: "Custom Data Loaded",
-      description: `Processed ${data.rawEvents.length} events successfully.`
-    });
-  };
-
-  const handleUploadClick = () => {
-    setShowUpload(true);
-  };
-
-  const handleReset = () => {
-    // Reset to sample data
-    setIsLoading(true);
-    getSampleDashboardData()
-      .then(sampleData => {
-        setDashboardData(sampleData);
-        setShowUpload(false);
-        setIsLoading(false);
-        
-        toast({
-          title: "Reset to Sample Data",
-          description: "Dashboard has been reset to sample data."
-        });
-      })
-      .catch(error => {
-        console.error("Failed to load sample data:", error);
-        setIsLoading(false);
-        
-        toast({
-          title: "Error Resetting Data",
-          description: "Failed to reset to sample data.",
-          variant: "destructive"
-        });
-      });
-  };
+  const { 
+    dashboardData, 
+    isLoading, 
+    showUpload, 
+    handleUploadClick, 
+    handleReset, 
+    handleDataProcessed,
+    isCustomData
+  } = useDashboard();
 
   if (isLoading) {
     return (
@@ -103,7 +43,7 @@ const Customers = () => {
               onDataProcessed={handleDataProcessed} 
               onCancel={() => {
                 if (dashboardData) {
-                  setShowUpload(false);
+                  showUpload && handleUploadClick();
                 }
               }}
             />
@@ -115,6 +55,7 @@ const Customers = () => {
                 onUploadClick={handleUploadClick} 
                 onReset={handleReset}
                 data={dashboardData}
+                isCustomData={isCustomData}
               />
               
               <div className="grid grid-cols-1 gap-6">
@@ -142,7 +83,7 @@ const Customers = () => {
                               <TableCell>{customer.name}</TableCell>
                               <TableCell>{customer.purchases}</TableCell>
                               <TableCell>${customer.sales.toFixed(2)}</TableCell>
-                              <TableCell>{(customer.satisfaction * 100).toFixed(0)}%</TableCell>
+                              <TableCell>{customer.satisfaction ? `${(customer.satisfaction * 100).toFixed(0)}%` : 'N/A'}</TableCell>
                               <TableCell>{customer.preferredProduct || 'N/A'}</TableCell>
                             </TableRow>
                           ))}

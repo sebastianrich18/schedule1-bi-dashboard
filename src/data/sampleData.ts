@@ -1,6 +1,7 @@
 
 import { DashboardData, ParsedEvent } from '@/utils/types';
 import { processDashboardData } from '@/utils/dataProcessor';
+import { parseCSV } from '@/utils/csvParser';
 
 const sampleCSVData = `GameTime,RealTime,EventType,Payload
 14:15:37,2025-04-13 14:15:37,COUNTER_OFFER,{"customer":"Jeff Gilmore","originalProductID":"fruitycrystal","originalProductType":"meth","originalQuantity":"3","originalPrice":"460.00","counterProductID":"fruitycrystal","counterProductType":"meth","counterQuantity":"5","counterPrice":"560.00","accepted":"True"}
@@ -32,19 +33,27 @@ const sampleCSVData = `GameTime,RealTime,EventType,Payload
 
 export const parseSampleData = async (): Promise<ParsedEvent[]> => {
   try {
-    // Import the parseCSV function from the csvParser utility
-    const { parseCSV } = await import('@/utils/csvParser');
-    
-    // Parse the sample CSV data
+    console.log("Parsing sample CSV data");
+    // Parse the sample CSV data directly
     const parsedData = await parseCSV(sampleCSVData);
+    console.log("Sample CSV parsed successfully, events:", parsedData.length);
     return parsedData;
   } catch (error) {
     console.error('Error parsing sample data:', error);
-    return [];
+    throw error; // Re-throw to be handled by the caller
   }
 };
 
 export const getSampleDashboardData = async (): Promise<DashboardData> => {
-  const parsedEvents = await parseSampleData();
-  return processDashboardData(parsedEvents);
+  try {
+    console.log("Getting sample dashboard data");
+    const parsedEvents = await parseSampleData();
+    console.log("Processing sample events:", parsedEvents.length);
+    const processedData = processDashboardData(parsedEvents);
+    console.log("Sample data processed successfully");
+    return processedData;
+  } catch (error) {
+    console.error("Error in getSampleDashboardData:", error);
+    throw error; // Re-throw to be handled by the caller
+  }
 };

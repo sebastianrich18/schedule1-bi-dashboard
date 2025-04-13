@@ -15,7 +15,8 @@ const Dealers = () => {
     showUpload, 
     handleUploadClick, 
     handleReset, 
-    handleDataProcessed
+    handleDataProcessed,
+    isCustomData
   } = useDashboard();
 
   if (isLoading) {
@@ -54,6 +55,7 @@ const Dealers = () => {
                 onUploadClick={handleUploadClick} 
                 onReset={handleReset}
                 data={dashboardData}
+                isCustomData={isCustomData}
               />
               
               <div className="grid grid-cols-1 gap-6">
