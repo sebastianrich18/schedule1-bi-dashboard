@@ -29,12 +29,12 @@ const sampleCSVData = `GameTime,RealTime,EventType,Payload
 14:19:58,2025-04-13 14:19:58,SALE,{"customer":"Kyle Cooley","dealer":"Benji","handoverByPlayer":"False","payment":"478.50","satisfaction":"1.0000","quantityRequested":"3","quantityProvided":"3","itemIDs":"fruitycrystal(3);","itemTypes":"meth;"}
 14:19:58,2025-04-13 14:19:58,CUSTOMER_PREFERENCE,{"customer":"Kyle Cooley","currentAddiction":"1.0000","highestAddiction":"0","mainDrugType":"meth","source":"Sale"}
 14:20:13,2025-04-13 14:20:13,SALE,{"customer":"Peter File","dealer":"Player","handoverByPlayer":"True","payment":"577.50","satisfaction":"1.0000","quantityRequested":"5","quantityProvided":"1","itemIDs":"meth(5);","itemTypes":"meth;"}
-14:20:13,2025-04-13 14:20:13,CUSTOMER_PREFERENCE,{"customer":"Peter File","currentAddiction":"1.0000","highestAddiction":"0","mainDrugType":"meth","source":"Sale"}`;
+14:20:13,2025-04-13 14:20:13,CUSTOMER_PREFERENCE,{"customer":"Peter File","currentAddiction":"1.0000","highestAddiction":"0","mainDrugType":"meth","source":"Sale"}`
 
 export const parseSampleData = async (): Promise<ParsedEvent[]> => {
   try {
     console.log("Parsing sample CSV data");
-    // Parse the sample CSV data directly
+    // Modified to handle the sample data more carefully
     const parsedData = await parseCSV(sampleCSVData);
     console.log("Sample CSV parsed successfully, events:", parsedData.length);
     return parsedData;

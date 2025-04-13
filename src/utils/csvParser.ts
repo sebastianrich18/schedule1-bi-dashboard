@@ -21,8 +21,16 @@ export const parseCSV = (csvContent: string): Promise<ParsedEvent[]> => {
                 throw new Error("CSV format is invalid. Required columns: GameTime, RealTime, EventType, Payload");
               }
               
-              // Parse the JSON payload
-              const parsedPayload = JSON.parse(row.Payload);
+              // Parse the JSON payload more safely with error handling
+              let parsedPayload;
+              try {
+                parsedPayload = JSON.parse(row.Payload);
+              } catch (err) {
+                console.error("Error parsing payload JSON:", row.Payload);
+                console.error("JSON parse error:", err);
+                // Provide a fallback object instead of breaking the entire process
+                parsedPayload = { error: "Failed to parse", raw: row.Payload };
+              }
               
               // Create a properly formatted ParsedEvent
               const event: ParsedEvent = {
