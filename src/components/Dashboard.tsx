@@ -13,9 +13,15 @@ interface DashboardProps {
   data: DashboardData;
   onUploadClick: () => void;
   onReset: () => void;
+  isCustomData?: boolean;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ data, onUploadClick, onReset }) => {
+const Dashboard: React.FC<DashboardProps> = ({ 
+  data, 
+  onUploadClick, 
+  onReset,
+  isCustomData = false
+}) => {
   const { summary } = data;
   
   return (
@@ -24,7 +30,16 @@ const Dashboard: React.FC<DashboardProps> = ({ data, onUploadClick, onReset }) =
         onUploadClick={onUploadClick} 
         onReset={onReset}
         data={data}
+        isCustomData={isCustomData}
       />
+      
+      {!isCustomData && (
+        <div className="bg-primary/10 p-3 rounded-md mb-4 border border-primary/20">
+          <p className="text-sm text-muted-foreground">
+            Currently viewing sample data. Upload your own CSV file to see your custom data.
+          </p>
+        </div>
+      )}
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <SummaryCard

@@ -8,12 +8,14 @@ interface DashboardHeaderProps {
   onUploadClick: () => void;
   onReset: () => void;
   data: DashboardData | null;
+  isCustomData?: boolean;
 }
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({ 
   onUploadClick, 
   onReset,
-  data
+  data,
+  isCustomData = false
 }) => {
   const handleExport = () => {
     if (!data) return;
@@ -42,9 +44,10 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           size="sm" 
           onClick={onReset}
           className="text-xs"
+          title={isCustomData ? "Reset to sample data" : "Refresh sample data"}
         >
           <RefreshCcw className="h-3.5 w-3.5 mr-1.5" />
-          Reset
+          {isCustomData ? "Reset" : "Refresh"}
         </Button>
         
         <Button 
@@ -54,7 +57,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           className="text-xs"
         >
           <Upload className="h-3.5 w-3.5 mr-1.5" />
-          New CSV
+          {isCustomData ? "New CSV" : "Upload CSV"}
         </Button>
         
         <Button 

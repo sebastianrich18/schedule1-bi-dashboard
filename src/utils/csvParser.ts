@@ -10,35 +10,36 @@ export const parseCSV = (csvText: string): CSVData[] => {
   for (let i = 1; i < lines.length; i++) {
     const currentLine = lines[i];
     
-    // Match all fields but handle quoted values correctly (especially for the JSON payload)
-    const regex = /(?:^|,)(?:"([^"]*(?:""[^"]*)*)"|([^,]*))/g;
-    const matches: string[] = [];
-    
-    let match;
-    while ((match = regex.exec(currentLine)) !== null) {
-      // match[1] is for quoted fields, match[2] is for unquoted
-      matches.push(match[1] !== undefined ? match[1].replace(/""/g, '"') : match[2]);
+    // Find the position of the first three commas (for GameTime, RealTime, EventType)
+    let commaCount = 0;
+    let lastCommaPos = -1;
+    for (let j = 0; j < currentLine.length; j++) {
+      if (currentLine[j] === ',') {
+        commaCount++;
+        lastCommaPos = j;
+        if (commaCount >= 3) break;
+      }
     }
     
-    if (matches.length >= headers.length) {
-      // Create a record with the expected CSVData properties
-      const csvDataObj: CSVData = {
-        GameTime: '',
-        RealTime: '',
-        EventType: '',
-        Payload: ''
-      };
-      
-      // Assign values to the object based on the headers
-      headers.forEach((header, index) => {
-        // Only assign known properties from the CSVData type
-        if (header in csvDataObj) {
-          (csvDataObj as any)[header] = matches[index];
-        }
-      });
-      
-      result.push(csvDataObj);
-    }
+    if (commaCount < 3 || lastCommaPos === -1) continue;
+    
+    // Split the line into four parts: GameTime, RealTime, EventType, and Payload
+    const gameTime = currentLine.substring(0, currentLine.indexOf(','));
+    const remaining = currentLine.substring(currentLine.indexOf(',') + 1);
+    const realTime = remaining.substring(0, remaining.indexOf(','));
+    const remaining2 = remaining.substring(remaining.indexOf(',') + 1);
+    const eventType = remaining2.substring(0, remaining2.indexOf(','));
+    const payload = remaining2.substring(remaining2.indexOf(',') + 1);
+    
+    // Create the CSVData object
+    const csvDataObj: CSVData = {
+      GameTime: gameTime,
+      RealTime: realTime,
+      EventType: eventType,
+      Payload: payload
+    };
+    
+    result.push(csvDataObj);
   }
   
   return result;
@@ -49,9 +50,16 @@ export const processRawCSVData = (data: CSVData[]): ParsedEvent[] => {
     // Try to parse the JSON payload
     let parsedPayload: any = {};
     try {
-      // The payload seems to be JSON string but with escaped quotes
-      const cleanPayload = item.Payload.replace(/\\"/g, '"');
-      parsedPayload = JSON.parse(cleanPayload);
+      // The JSON might have escaped quotes that need to be handled
+      const cleanPayload = item.Payload.trim();
+      
+      // Check if the payload is already valid JSON or needs further cleaning
+      if (cleanPayload.startsWith('{') && cleanPayload.endsWith('}')) {
+        parsedPayload = JSON.parse(cleanPayload);
+      } else {
+        // Handle differently formatted payloads if needed
+        console.log('Non-standard payload format:', cleanPayload);
+      }
     } catch (error) {
       console.error('Failed to parse payload:', item.Payload, error);
     }
@@ -85,5 +93,18 @@ export const parseCSVFile = (file: File): Promise<ParsedEvent[]> => {
     };
     
     reader.readAsText(file);
+  });
+};
+
+// New function to parse a CSV string directly
+export const parseCSVString = (csvString: string): Promise<ParsedEvent[]> => {
+  return new Promise((resolve, reject) => {
+    try {
+      const parsedCSV = parseCSV(csvString);
+      const processedData = processRawCSVData(parsedCSV);
+      resolve(processedData);
+    } catch (error) {
+      reject(error);
+    }
   });
 };

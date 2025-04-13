@@ -5,16 +5,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { parseCSVFile } from '@/utils/csvParser';
 import { processDashboardData } from '@/utils/dataProcessor';
 import { useToast } from '@/components/ui/use-toast';
-import { Upload, FileText, AlertCircle } from 'lucide-react';
+import { Upload, FileText, AlertCircle, X } from 'lucide-react';
 
 interface CSVUploadProps {
   onDataProcessed: (data: any) => void;
+  onCancel?: () => void;
 }
 
-const CSVUpload: React.FC<CSVUploadProps> = ({ onDataProcessed }) => {
+const CSVUpload: React.FC<CSVUploadProps> = ({ onDataProcessed, onCancel }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const processFile = async (file: File) => {
@@ -29,9 +31,15 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onDataProcessed }) => {
 
     setIsLoading(true);
     setFileName(file.name);
+    setError(null);
 
     try {
       const parsedData = await parseCSVFile(file);
+      
+      if (parsedData.length === 0) {
+        throw new Error("No valid data found in CSV file");
+      }
+      
       const dashboardData = processDashboardData(parsedData);
       
       toast({
@@ -42,6 +50,8 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onDataProcessed }) => {
       onDataProcessed(dashboardData);
     } catch (error) {
       console.error("Error processing CSV:", error);
+      setError(error instanceof Error ? error.message : "Unknown error processing CSV");
+      
       toast({
         title: "Error Processing CSV",
         description: "There was an error processing your file. Check console for details.",
@@ -85,10 +95,25 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onDataProcessed }) => {
   return (
     <Card className="w-full md:max-w-2xl mx-auto animate-fade-in">
       <CardHeader>
-        <CardTitle className="text-center text-2xl">Sales Analytics Dashboard</CardTitle>
-        <CardDescription className="text-center">
-          Upload your sales CSV data to generate insights
-        </CardDescription>
+        <div className="flex justify-between items-center">
+          <div>
+            <CardTitle className="text-center text-2xl">Upload CSV Data</CardTitle>
+            <CardDescription className="text-center">
+              Upload your sales CSV data to generate insights
+            </CardDescription>
+          </div>
+          
+          {onCancel && (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={onCancel} 
+              className="rounded-full"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
       </CardHeader>
       
       <CardContent>
@@ -103,6 +128,15 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onDataProcessed }) => {
             <div className="flex flex-col items-center gap-4">
               <div className="h-12 w-12 rounded-full border-4 border-primary/30 border-t-primary animate-spin"></div>
               <p className="text-muted-foreground">Processing {fileName}...</p>
+            </div>
+          ) : error ? (
+            <div className="flex flex-col items-center gap-4">
+              <AlertCircle className="h-12 w-12 text-destructive" />
+              <h3 className="text-lg font-medium mb-2 text-destructive">Error Processing File</h3>
+              <p className="text-sm text-muted-foreground mb-4 text-center">{error}</p>
+              <Button variant="outline" onClick={() => setError(null)}>
+                Try Again
+              </Button>
             </div>
           ) : (
             <>
