@@ -3,6 +3,7 @@ import { DashboardData, ParsedEvent } from '@/utils/types';
 import { processDashboardData } from '@/utils/dataProcessor';
 import { parseCSV } from '@/utils/csvParser';
 
+// Ensure CSV data ends correctly without introducing JSON parsing issues
 const sampleCSVData = `GameTime,RealTime,EventType,Payload
 14:15:37,2025-04-13 14:15:37,COUNTER_OFFER,{"customer":"Jeff Gilmore","originalProductID":"fruitycrystal","originalProductType":"meth","originalQuantity":"3","originalPrice":"460.00","counterProductID":"fruitycrystal","counterProductType":"meth","counterQuantity":"5","counterPrice":"560.00","accepted":"True"}
 14:15:39,2025-04-13 14:15:39,OFFER_ACCEPTED,{"customer":"Jeff Gilmore","productID":"fruitycrystal","productType":"meth","quantity":"5","price":"560.00","window":"LateNight","successChance":"-1.0000"}

@@ -38,16 +38,14 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
         const sampleData = await getSampleDashboardData();
         console.log("Sample data loaded successfully:", sampleData);
         setDashboardData(sampleData);
-        setIsLoading(false);
         setIsCustomData(false);
         
         toast({
           title: "Sample Data Loaded",
-          description: "Viewing sample sales data. You can upload your own CSV file.",
+          description: "Viewing sample sales data. You can upload your own CSV file."
         });
       } catch (error) {
         console.error("Failed to load sample data:", error);
-        setIsLoading(false);
         setShowUpload(true);
         
         toast({
@@ -55,6 +53,8 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
           title: "Error Loading Sample Data",
           description: "Failed to load sample data. Please upload your own CSV."
         });
+      } finally {
+        setIsLoading(false);
       }
     };
 

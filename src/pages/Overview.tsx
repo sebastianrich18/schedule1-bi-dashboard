@@ -4,6 +4,8 @@ import CSVUpload from '@/components/CSVUpload';
 import Dashboard from '@/components/Dashboard';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import { useDashboard } from '@/context/DashboardContext';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { InfoIcon } from 'lucide-react';
 
 const Overview = () => {
   const { 
@@ -40,13 +42,30 @@ const Overview = () => {
               onDataProcessed={handleDataProcessed} 
               onCancel={() => {
                 if (dashboardData) {
-                  showUpload && handleUploadClick();
+                  handleUploadClick();
                 }
               }}
             />
           </div>
         ) : dashboardData ? (
           <div className="w-full h-full overflow-auto">
+            {!isCustomData && (
+              <div className="p-4 bg-primary/10 mx-4 mt-4 rounded-md border border-primary/20">
+                <div className="flex items-center space-x-2">
+                  <InfoIcon className="h-5 w-5 text-primary" />
+                  <h3 className="font-medium">Viewing Sample Data</h3>
+                </div>
+                <p className="text-sm mt-1">
+                  This is example data. Upload your own CSV file to see your custom data.
+                </p>
+                <button 
+                  onClick={handleUploadClick}
+                  className="mt-2 px-4 py-2 bg-primary text-white rounded-md text-sm"
+                >
+                  Upload CSV
+                </button>
+              </div>
+            )}
             <Dashboard 
               data={dashboardData} 
               onUploadClick={handleUploadClick}

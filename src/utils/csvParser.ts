@@ -6,12 +6,15 @@ import { CSVData, ParsedEvent } from './types';
 export const parseCSV = (csvContent: string): Promise<ParsedEvent[]> => {
   return new Promise((resolve, reject) => {
     try {
+      console.log("Starting to parse CSV content...");
       Papa.parse(csvContent, {
         header: true,
         skipEmptyLines: true,
         complete: (results) => {
           try {
+            console.log("Papa parse complete, raw results:", results);
             const parsedData = results.data as Record<string, string>[];
+            console.log("Parsed data rows:", parsedData.length);
             
             // Transform the data to match our ParsedEvent type
             const events: ParsedEvent[] = parsedData.map(row => {
@@ -50,6 +53,7 @@ export const parseCSV = (csvContent: string): Promise<ParsedEvent[]> => {
               return event;
             });
             
+            console.log("Successfully transformed events:", events.length);
             resolve(events);
           } catch (err) {
             console.error("Error processing CSV data:", err);

@@ -7,6 +7,8 @@ import TopCustomersChart from '@/components/TopCustomersChart';
 import DashboardHeader from '@/components/DashboardHeader';
 import CSVUpload from '@/components/CSVUpload';
 import { useDashboard } from '@/context/DashboardContext';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { InfoIcon } from 'lucide-react';
 
 const Customers = () => {
   const { 
@@ -43,7 +45,7 @@ const Customers = () => {
               onDataProcessed={handleDataProcessed} 
               onCancel={() => {
                 if (dashboardData) {
-                  showUpload && handleUploadClick();
+                  handleUploadClick();
                 }
               }}
             />
@@ -57,6 +59,16 @@ const Customers = () => {
                 data={dashboardData}
                 isCustomData={isCustomData}
               />
+              
+              {!isCustomData && (
+                <Alert variant="default" className="bg-primary/10 border border-primary/20">
+                  <InfoIcon className="h-4 w-4" />
+                  <AlertTitle>Sample Data Mode</AlertTitle>
+                  <AlertDescription>
+                    You are currently viewing sample data. Upload your own CSV file to see your custom data.
+                  </AlertDescription>
+                </Alert>
+              )}
               
               <div className="grid grid-cols-1 gap-6">
                 <TopCustomersChart data={dashboardData} limit={10} />
