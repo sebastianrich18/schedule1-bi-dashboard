@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -103,7 +102,7 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onDataProcessed, onCancel }) => {
           <div>
             <CardTitle className="text-center text-2xl">Upload CSV Data</CardTitle>
             <CardDescription className="text-center">
-              Upload your sales CSV data to generate insights
+              Upload your game data file
             </CardDescription>
           </div>
           
@@ -172,19 +171,14 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onDataProcessed, onCancel }) => {
               </div>
               
               <div className="mt-6 space-y-2 w-full">
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <AlertCircle className="h-3 w-3 flex-shrink-0" />
-                  <span>The CSV must have GameTime, RealTime, EventType, and Payload columns</span>
-                </div>
-                
                 <div className="bg-muted/50 p-3 rounded-md flex gap-2 text-xs">
                   <Info className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                   <div className="overflow-hidden">
-                    <p className="font-medium">Looking for your game data file?</p>
-                    <p className="mt-1">It's typically located at:</p>
-                    <pre className="bg-background/50 p-2 rounded mt-1 text-xs overflow-x-auto whitespace-pre-wrap break-all">
+                    <p className="font-medium">Game data file location</p>
+                    <p className="mt-1">Typically found at:</p>
+                    <code className="block bg-background/50 p-2 rounded mt-1 text-xs overflow-x-auto whitespace-pre-wrap break-all">
                       C:\Users\{"{USER}"}\AppData\LocalLow\TVGS\Schedule I\BusinessIntelligence\business_intelligence_data.csv
-                    </pre>
+                    </code>
                   </div>
                 </div>
               </div>
