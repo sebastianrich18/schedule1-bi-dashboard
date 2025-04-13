@@ -34,6 +34,7 @@ export const parseSampleData = async (): Promise<ParsedEvent[]> => {
   try {
     // Import the parseCSV function from the csvParser utility
     const { parseCSV } = await import('@/utils/csvParser');
+    
     // Parse the sample CSV data
     const parsedData = await parseCSV(sampleCSVData);
     return parsedData;
@@ -43,7 +44,7 @@ export const parseSampleData = async (): Promise<ParsedEvent[]> => {
   }
 };
 
-export const getSampleDashboardData = async () => {
+export const getSampleDashboardData = async (): Promise<DashboardData> => {
   const parsedEvents = await parseSampleData();
   return processDashboardData(parsedEvents);
 };
