@@ -51,23 +51,64 @@ const groupSalesByTimeInterval = (sales: SaleEvent[], intervalMinutes = 5) => {
 };
 
 const getTopCustomers = (sales: SaleEvent[], limit = 10) => {
-  const customerMap: Record<string, { sales: number, purchases: number }> = {};
+  const customerMap: Record<string, { 
+    sales: number, 
+    purchases: number, 
+    satisfaction: number,
+    preferredProducts: Record<string, number>
+  }> = {};
   
   sales.forEach(sale => {
     if (!customerMap[sale.customer]) {
-      customerMap[sale.customer] = { sales: 0, purchases: 0 };
+      customerMap[sale.customer] = { 
+        sales: 0, 
+        purchases: 0, 
+        satisfaction: 0,
+        preferredProducts: {}
+      };
     }
     
     customerMap[sale.customer].sales += sale.payment;
     customerMap[sale.customer].purchases += 1;
+    customerMap[sale.customer].satisfaction += sale.satisfaction;
+    
+    // Extract products from itemIDs
+    const itemsStr = sale.itemIDs;
+    const items = itemsStr.split(';').filter(Boolean);
+    
+    items.forEach(itemStr => {
+      const match = itemStr.match(/(.+)\((\d+)\)/);
+      if (match) {
+        const [_, productName, quantity] = match;
+        if (!customerMap[sale.customer].preferredProducts[productName]) {
+          customerMap[sale.customer].preferredProducts[productName] = 0;
+        }
+        customerMap[sale.customer].preferredProducts[productName] += parseInt(quantity);
+      }
+    });
   });
   
   return Object.entries(customerMap)
-    .map(([name, data]) => ({
-      name,
-      sales: parseFloat(data.sales.toFixed(2)),
-      purchases: data.purchases
-    }))
+    .map(([name, data]) => {
+      // Find preferred product
+      let preferredProduct = '';
+      let maxQuantity = 0;
+      
+      Object.entries(data.preferredProducts).forEach(([product, quantity]) => {
+        if (quantity > maxQuantity) {
+          maxQuantity = quantity;
+          preferredProduct = product;
+        }
+      });
+      
+      return {
+        name,
+        sales: parseFloat(data.sales.toFixed(2)),
+        purchases: data.purchases,
+        satisfaction: data.purchases > 0 ? parseFloat((data.satisfaction / data.purchases).toFixed(2)) : 0,
+        preferredProduct: preferredProduct || 'N/A'
+      };
+    })
     .sort((a, b) => b.sales - a.sales)
     .slice(0, limit);
 };
@@ -108,26 +149,31 @@ const getTopProducts = (sales: SaleEvent[], limit = 10) => {
   const productMap: Record<string, { 
     sales: number, 
     quantity: number, 
-    transactions: number 
+    transactions: number,
+    type: string
   }> = {};
   
   sales.forEach(sale => {
     // Parse the itemIDs string which looks like: "product(quantity);"
     const itemsStr = sale.itemIDs;
+    const itemTypesStr = sale.itemTypes;
     const items = itemsStr.split(';').filter(Boolean);
+    const types = itemTypesStr.split(';').filter(Boolean);
     
-    items.forEach(itemStr => {
+    items.forEach((itemStr, index) => {
       // Extract product name and quantity
       const match = itemStr.match(/(.+)\((\d+)\)/);
       if (match) {
         const [_, productName, quantity] = match;
         const qtyNum = parseInt(quantity);
+        const productType = types[index] || 'unknown';
         
         if (!productMap[productName]) {
           productMap[productName] = { 
             sales: 0, 
             quantity: 0, 
-            transactions: 0 
+            transactions: 0,
+            type: productType
           };
         }
         
@@ -147,7 +193,8 @@ const getTopProducts = (sales: SaleEvent[], limit = 10) => {
       name,
       sales: parseFloat(data.sales.toFixed(2)),
       quantity: data.quantity,
-      avgPrice: parseFloat((data.sales / data.quantity).toFixed(2))
+      avgPrice: parseFloat((data.sales / data.quantity).toFixed(2)),
+      type: data.type
     }))
     .sort((a, b) => b.sales - a.sales)
     .slice(0, limit);

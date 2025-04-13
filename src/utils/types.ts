@@ -11,6 +11,11 @@ export interface ParsedEvent {
   realTime: Date;
   eventType: string;
   payload: any;
+  // Adding original properties for Events.tsx
+  GameTime: string;
+  RealTime: string;
+  EventType: string;
+  Payload: string;
 }
 
 export interface SaleEvent {
@@ -80,6 +85,8 @@ export interface DashboardData {
     name: string;
     sales: number;
     purchases: number;
+    satisfaction?: number;
+    preferredProduct?: string;
   }[];
   topDealers: {
     name: string;
@@ -92,6 +99,7 @@ export interface DashboardData {
     sales: number;
     quantity: number;
     avgPrice: number;
+    type?: string;
   }[];
   eventDistribution: {
     name: string;

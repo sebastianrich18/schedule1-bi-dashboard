@@ -138,15 +138,17 @@ const Events = () => {
                         <TableBody>
                           {dashboardData.rawEvents.slice(0, 20).map((event, index) => (
                             <TableRow key={index}>
-                              <TableCell>{event.GameTime}</TableCell>
-                              <TableCell>{event.RealTime}</TableCell>
+                              <TableCell>{event.gameTime}</TableCell>
+                              <TableCell>{event.realTime.toLocaleString()}</TableCell>
                               <TableCell>
                                 <span className="rounded-md px-2 py-1 text-xs font-medium bg-primary/20 text-primary">
-                                  {event.EventType}
+                                  {event.eventType}
                                 </span>
                               </TableCell>
                               <TableCell className="max-w-xs truncate">
-                                {JSON.stringify(JSON.parse(event.Payload)).substring(0, 50)}...
+                                {typeof event.payload === 'object' 
+                                  ? JSON.stringify(event.payload).substring(0, 50) + '...'
+                                  : String(event.payload).substring(0, 50) + '...'}
                               </TableCell>
                             </TableRow>
                           ))}
