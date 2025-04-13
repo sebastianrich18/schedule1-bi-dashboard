@@ -2,6 +2,7 @@
 import Papa from 'papaparse';
 import { CSVData, ParsedEvent } from './types';
 
+// Parse CSV string content
 export const parseCSV = (csvContent: string): Promise<ParsedEvent[]> => {
   return new Promise((resolve, reject) => {
     try {
@@ -57,4 +58,39 @@ export const parseCSV = (csvContent: string): Promise<ParsedEvent[]> => {
       reject(err);
     }
   });
+};
+
+// Parse CSV file
+export const parseCSVFile = (file: File): Promise<ParsedEvent[]> => {
+  return new Promise((resolve, reject) => {
+    try {
+      const reader = new FileReader();
+      
+      reader.onload = async (e) => {
+        try {
+          const csvContent = e.target?.result as string;
+          const events = await parseCSV(csvContent);
+          resolve(events);
+        } catch (err) {
+          console.error("Error processing CSV file:", err);
+          reject(err);
+        }
+      };
+      
+      reader.onerror = (e) => {
+        console.error("Error reading file:", e);
+        reject(new Error("Failed to read the CSV file"));
+      };
+      
+      reader.readAsText(file);
+    } catch (err) {
+      console.error("Unexpected error while reading file:", err);
+      reject(err);
+    }
+  });
+};
+
+// Process raw CSV data
+export const processRawCSVData = (csvContent: string): Promise<ParsedEvent[]> => {
+  return parseCSV(csvContent);
 };

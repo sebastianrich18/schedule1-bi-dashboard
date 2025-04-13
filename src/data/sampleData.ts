@@ -1,6 +1,6 @@
-
-import { ParsedEvent } from '../utils/types';
-import { processDashboardData } from '../utils/dataProcessor';
+import { DashboardData, ParsedEvent } from '@/utils/types';
+import { processRawCSVData } from '@/utils/csvParser';
+import { processDashboardData } from '@/utils/dataProcessor';
 
 const sampleCSVData = `GameTime,RealTime,EventType,Payload
 14:15:37,2025-04-13 14:15:37,COUNTER_OFFER,{"customer":"Jeff Gilmore","originalProductID":"fruitycrystal","originalProductType":"meth","originalQuantity":"3","originalPrice":"460.00","counterProductID":"fruitycrystal","counterProductType":"meth","counterQuantity":"5","counterPrice":"560.00","accepted":"True"}
@@ -33,7 +33,7 @@ const sampleCSVData = `GameTime,RealTime,EventType,Payload
 export const parseSampleData = async (): Promise<ParsedEvent[]> => {
   try {
     // Use the existing parser functions to parse the CSV
-    const { parseCSV, processRawCSVData } = await import('../utils/csvParser');
+    const { parseCSV, processRawCSVData } = await import('@/utils/csvParser');
     const parsedData = parseCSV(sampleCSVData);
     return processRawCSVData(parsedData);
   } catch (error) {
