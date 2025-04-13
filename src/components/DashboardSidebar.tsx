@@ -8,9 +8,7 @@ import {
   ShoppingBag, 
   UserCheck,
   PieChart,
-  Upload,
-  Settings,
-  Info
+  Upload
 } from 'lucide-react';
 
 interface DashboardSidebarProps {
@@ -99,26 +97,6 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onUploadClick }) =>
           >
             <Upload className="mr-2 h-4 w-4" />
             Upload CSV
-          </Button>
-          <Button 
-            variant={location.pathname === "/settings" ? "secondary" : "ghost"} 
-            className="w-full justify-start"
-            asChild
-          >
-            <Link to="/settings">
-              <Settings className="mr-2 h-4 w-4" />
-              Settings
-            </Link>
-          </Button>
-          <Button 
-            variant={location.pathname === "/about" ? "secondary" : "ghost"} 
-            className="w-full justify-start"
-            asChild
-          >
-            <Link to="/about">
-              <Info className="mr-2 h-4 w-4" />
-              About
-            </Link>
           </Button>
         </div>
       </div>

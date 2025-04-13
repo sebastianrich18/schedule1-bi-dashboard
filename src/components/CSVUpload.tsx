@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { parseCSVFile } from '@/utils/csvParser';
 import { processDashboardData } from '@/utils/dataProcessor';
 import { useToast } from '@/components/ui/use-toast';
-import { Upload, FileText, AlertCircle, X } from 'lucide-react';
+import { Upload, FileText, AlertCircle, X, Info } from 'lucide-react';
 
 interface CSVUploadProps {
   onDataProcessed: (data: any) => void;
@@ -160,10 +160,21 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onDataProcessed, onCancel }) => {
                 </Button>
               </div>
               
-              <div className="mt-6 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1">
+              <div className="mt-6 space-y-2">
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <AlertCircle className="h-3 w-3" />
                   <span>The CSV must have GameTime, RealTime, EventType, and Payload columns</span>
+                </div>
+                
+                <div className="bg-muted/50 p-3 rounded-md flex gap-2 text-xs">
+                  <Info className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-medium">Looking for your game data file?</p>
+                    <p className="mt-1">It's typically located at:</p>
+                    <pre className="bg-background/50 p-2 rounded mt-1 text-xs overflow-auto">
+                      C:\Users\{"{USER}"}\AppData\LocalLow\TVGS\Schedule I\BusinessIntelligence\business_intelligence_data.csv
+                    </pre>
+                  </div>
                 </div>
               </div>
             </>

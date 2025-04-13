@@ -1,7 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { DashboardData } from '@/utils/types';
-import { getSampleDashboardData } from '@/data/sampleData';
 import { useToast } from '@/components/ui/use-toast';
 
 interface DashboardContextType {
@@ -25,43 +24,10 @@ interface DashboardProviderProps {
 
 export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }) => {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [showUpload, setShowUpload] = useState<boolean>(false);
-  const [isCustomData, setIsCustomData] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showUpload, setShowUpload] = useState<boolean>(true);
+  const [isCustomData, setIsCustomData] = useState<boolean>(true);
   const { toast } = useToast();
-
-  useEffect(() => {
-    // Load sample data on initial render
-    const loadSampleData = async () => {
-      try {
-        console.log("Loading sample data...");
-        const sampleData = await getSampleDashboardData();
-        console.log("Sample data loaded successfully:", sampleData);
-        setDashboardData(sampleData);
-        setIsCustomData(false);
-        
-        toast({
-          title: "Sample Data Loaded",
-          description: "Viewing sample sales data. You can upload your own CSV file."
-        });
-      } catch (error) {
-        console.error("Failed to load sample data:", error);
-        setShowUpload(true);
-        
-        toast({
-          variant: "destructive",
-          title: "Error Loading Sample Data",
-          description: "Failed to load sample data. Please upload your own CSV."
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (isLoading && !dashboardData) {
-      loadSampleData();
-    }
-  }, [isLoading, toast, dashboardData]);
 
   const handleDataProcessed = (data: DashboardData) => {
     setDashboardData(data);
@@ -70,8 +36,8 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
     setIsLoading(false);
     
     toast({
-      title: "Custom Data Loaded",
-      description: `Processed ${data.rawEvents.length} events successfully.`
+      title: "Data Loaded Successfully",
+      description: `Processed ${data.rawEvents.length} events.`
     });
   };
 
@@ -80,31 +46,16 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
   };
 
   const handleReset = () => {
-    // Reset to sample data
-    setIsLoading(true);
-    setShowUpload(false);
+    // Reset to empty state
+    setDashboardData(null);
+    setShowUpload(true);
+    setIsCustomData(true);
+    setIsLoading(false);
     
-    getSampleDashboardData()
-      .then(sampleData => {
-        setDashboardData(sampleData);
-        setIsCustomData(false);
-        setIsLoading(false);
-        
-        toast({
-          title: "Reset to Sample Data",
-          description: "Dashboard has been reset to sample data."
-        });
-      })
-      .catch(error => {
-        console.error("Failed to load sample data:", error);
-        setIsLoading(false);
-        
-        toast({
-          variant: "destructive",
-          title: "Error Resetting Data",
-          description: "Failed to reset to sample data."
-        });
-      });
+    toast({
+      title: "Dashboard Reset",
+      description: "Please upload a CSV file."
+    });
   };
 
   return (

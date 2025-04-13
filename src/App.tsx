@@ -11,8 +11,6 @@ import Customers from "./pages/Customers";
 import Products from "./pages/Products";
 import Dealers from "./pages/Dealers";
 import Events from "./pages/Events";
-import Settings from "./pages/Settings";
-import About from "./pages/About";
 
 const queryClient = new QueryClient();
 
@@ -29,8 +27,6 @@ const App = () => (
             <Route path="/products" element={<Products />} />
             <Route path="/dealers" element={<Dealers />} />
             <Route path="/events" element={<Events />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
