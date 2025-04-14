@@ -22,7 +22,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onUploadClick }) =>
     <div className="w-64 border-r bg-sidebar h-screen flex flex-col">
       {/* Header */}
       <div className="p-4 border-b">
-        <h2 className="text-xl font-bold flex items-center gap-2">
+        <h2 className="text-xl font-bold flex items-center gap-2 text-sidebar-foreground">
           <BarChart3 className="h-5 w-5" /> 
           <span>Analytics</span>
         </h2>
@@ -30,13 +30,13 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onUploadClick }) =>
       
       {/* Menu */}
       <div className="flex-1 py-4">
-        <div className="px-3 mb-2 text-xs font-semibold text-muted-foreground">
+        <div className="px-3 mb-2 text-xs font-semibold text-sidebar-foreground/70">
           INSIGHTS
         </div>
         <div className="space-y-1 px-2">
           <Button 
             variant={location.pathname === "/" ? "secondary" : "ghost"} 
-            className="w-full justify-start"
+            className="w-full justify-start text-sidebar-foreground"
             asChild
           >
             <Link to="/">
@@ -46,7 +46,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onUploadClick }) =>
           </Button>
           <Button 
             variant={location.pathname === "/customers" ? "secondary" : "ghost"} 
-            className="w-full justify-start"
+            className="w-full justify-start text-sidebar-foreground"
             asChild
           >
             <Link to="/customers">
@@ -56,7 +56,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onUploadClick }) =>
           </Button>
           <Button 
             variant={location.pathname === "/products" ? "secondary" : "ghost"} 
-            className="w-full justify-start"
+            className="w-full justify-start text-sidebar-foreground"
             asChild
           >
             <Link to="/products">
@@ -66,7 +66,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onUploadClick }) =>
           </Button>
           <Button 
             variant={location.pathname === "/dealers" ? "secondary" : "ghost"} 
-            className="w-full justify-start"
+            className="w-full justify-start text-sidebar-foreground"
             asChild
           >
             <Link to="/dealers">
@@ -76,7 +76,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onUploadClick }) =>
           </Button>
           <Button 
             variant={location.pathname === "/events" ? "secondary" : "ghost"} 
-            className="w-full justify-start"
+            className="w-full justify-start text-sidebar-foreground"
             asChild
           >
             <Link to="/events">
@@ -86,13 +86,13 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onUploadClick }) =>
           </Button>
         </div>
         
-        <div className="mt-6 px-3 mb-2 text-xs font-semibold text-muted-foreground">
+        <div className="mt-6 px-3 mb-2 text-xs font-semibold text-sidebar-foreground/70">
           ACTIONS
         </div>
         <div className="space-y-1 px-2">
           <Button 
             variant="ghost" 
-            className="w-full justify-start"
+            className="w-full justify-start text-sidebar-foreground"
             onClick={onUploadClick}
           >
             <Upload className="mr-2 h-4 w-4" />
@@ -102,8 +102,8 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onUploadClick }) =>
       </div>
       
       {/* Footer */}
-      <div className="p-4 border-t text-xs text-center text-muted-foreground">
-        Sales Analytics Dashboard v1.0
+      <div className="p-4 border-t text-xs text-center text-sidebar-foreground">
+        Schedule 1 BI Dashboard v1.0.1
       </div>
     </div>
   );

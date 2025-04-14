@@ -40,7 +40,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   
   return (
     <div className="flex justify-between items-center mb-6">
-      <h1 className="text-2xl font-bold">Sales Analytics Dashboard</h1>
+      <h1 className="text-2xl font-bold text-foreground">Schedule 1 BI Dashboard</h1>
       
       <div className="flex flex-wrap gap-2">
         <Button 
