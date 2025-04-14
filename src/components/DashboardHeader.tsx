@@ -46,7 +46,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           variant="outline" 
           size="sm" 
           onClick={onUploadClick}
-          className="text-xs"
+          className="text-xs text-white hover:text-white"
         >
           <Upload className="h-3.5 w-3.5 mr-1.5" />
           New CSV
@@ -56,7 +56,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           variant="outline" 
           size="sm" 
           onClick={downloadMod}
-          className="text-xs"
+          className="text-xs text-white hover:text-white"
         >
           <Download className="h-3.5 w-3.5 mr-1.5" />
           Get Mod
