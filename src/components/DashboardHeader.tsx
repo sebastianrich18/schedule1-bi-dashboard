@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Download, Upload, RefreshCcw } from 'lucide-react';
+import { Download, Upload } from 'lucide-react';
 import { DashboardData } from '@/utils/types';
 
 interface DashboardHeaderProps {
@@ -43,17 +42,6 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       <h1 className="text-2xl font-bold text-foreground">Schedule 1 BI Dashboard</h1>
       
       <div className="flex flex-wrap gap-2">
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={onReset}
-          className="text-xs"
-          title="Reset to upload screen"
-        >
-          <RefreshCcw className="h-3.5 w-3.5 mr-1.5" />
-          Reset
-        </Button>
-        
         <Button 
           variant="outline" 
           size="sm" 
