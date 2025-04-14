@@ -64,12 +64,12 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				dashboard: {
-					purple: '#8B5CF6',
+					purple: 'hsl(var(--chart-purple))',
 					indigo: '#4338CA',
-					orange: '#F97316',
-					green: '#10B981',
-					blue: '#3B82F6',
-					red: '#EF4444',
+					orange: 'hsl(var(--chart-orange))',
+					green: 'hsl(var(--chart-green))',
+					blue: 'hsl(var(--chart-blue))',
+					red: 'hsl(var(--chart-red))',
 					yellow: '#F59E0B',
 					teal: '#14B8A6',
 				}

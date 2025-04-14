@@ -43,6 +43,13 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* Chart colors that won't be affected by dark mode extensions */
+    --chart-red: 0 84% 60%;
+    --chart-purple: 265 83% 65%;
+    --chart-orange: 24 95% 53%;
+    --chart-green: 158 64% 40%;
+    --chart-blue: 217 91% 60%;
   }
 
   .dark {
@@ -82,6 +89,13 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 250 84% 54%;
+    
+    /* Chart colors for dark mode */
+    --chart-red: 0 84% 60%;
+    --chart-purple: 265 83% 65%;
+    --chart-orange: 24 95% 53%;
+    --chart-green: 158 64% 40%;
+    --chart-blue: 217 91% 60%;
   }
 }
 
@@ -112,4 +126,30 @@
 
 ::-webkit-scrollbar-thumb {
   @apply bg-primary/50 rounded hover:bg-primary/70 transition-colors;
+}
+
+/* Chart-specific color overrides to prevent dark mode extensions from affecting them */
+.recharts-pie path[fill="#EF4444"],
+.recharts-sector[fill="#EF4444"] {
+  fill: hsl(var(--chart-red)) !important;
+}
+
+.recharts-pie path[fill="#8B5CF6"],
+.recharts-sector[fill="#8B5CF6"] {
+  fill: hsl(var(--chart-purple)) !important;
+}
+
+.recharts-pie path[fill="#F97316"],
+.recharts-sector[fill="#F97316"] {
+  fill: hsl(var(--chart-orange)) !important;
+}
+
+.recharts-pie path[fill="#10B981"],
+.recharts-sector[fill="#10B981"] {
+  fill: hsl(var(--chart-green)) !important;
+}
+
+.recharts-pie path[fill="#3B82F6"],
+.recharts-sector[fill="#3B82F6"] {
+  fill: hsl(var(--chart-blue)) !important;
 }
